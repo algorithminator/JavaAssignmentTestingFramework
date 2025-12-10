@@ -168,7 +168,6 @@ public class Utilities
         var methodObject = Utilities.findMethod(fullyQualifiedClassName, methodName, parameterTypes.toArray(new Class[0]));
 
         return methodObject.map(method -> method.getReturnType().equals(returnType)).orElse(false);
-
     }
 
     static public boolean methodReturns(Method methodObject, Class<?> returnType) {
@@ -233,6 +232,7 @@ public class Utilities
         return Utilities.findField(fullyQualifiedClassName, fieldName).isPresent();
     }
 
+
     public String fieldType(Type type) {
         if (type instanceof ParameterizedType parameterizedType) {
             return fieldParameterizedType(parameterizedType);
@@ -241,6 +241,7 @@ public class Utilities
             return stripPackageFromClassName(type.getTypeName());
         }
     }
+
 
     public String fieldParameterizedType(ParameterizedType type) {
         StringBuilder output = new StringBuilder();
@@ -368,19 +369,21 @@ public class Utilities
         });
     }
 
+
     //__________________________________________________________________________________________________________________
     //### Scoped method
-    /** SCOPED CLASS */
+    /** Scoped CLASS */
     static public void testMethod(String methodName, List<Class<?>> parameterTypes, Runnable fn) {
         Utilities.findMethod(CLASS.get(), methodName, parameterTypes.toArray(new Class[0])).ifPresent(
                 method -> Utilities.testMethod(method, fn)
         );
     }
 
-    /** SCOPED METHOD */
+    /** Scoped METHOD */
     static public void testMethod(Method methodObject, Runnable fn) {
         where(Utilities.METHOD, methodObject).run(fn);
     }
+
 
     //__________________________________________________________________________________________________________________
     //### Scoped field
@@ -403,6 +406,10 @@ public class Utilities
         });
     }
 
+    static public void testField(String fieldName, Runnable fn) {
+        Utilities.testField(CLASS.get(), fieldName, fn);
+    }
+
     static public void testField(Class<?> classObject, String fieldName, Runnable fn) {
         Utilities.findField(classObject, fieldName).ifPresent(field -> Utilities.testField(field, fn));
     }
@@ -414,7 +421,7 @@ public class Utilities
 
     //------------------------------------------------------------------------------------------------------------------
     //## Classes
-    /** SCOPED CLASS */
+    /** Scoped CLASS */
     static public boolean classInheritsFrom(Class<?> classObject) {
         var superClass = CLASS.get().getSuperclass();
 
@@ -429,7 +436,7 @@ public class Utilities
         return false;
     }
 
-    /** SCOPED CLASS */
+    /** Scoped CLASS */
     static public Object classCreateInstance(Object... parameterValues) {
         return Utilities.classCreateInstance(CLASS.get(), parameterValues);
     }
@@ -450,6 +457,7 @@ public class Utilities
         }
     }
 
+    /** Scoped CLASS */
     static public void classInstanceInvokeMethod(Object instance, String methodName, Object... parameterValues) {
         var signature = Arrays.stream(parameterValues).map(Object::getClass).toArray();
 
@@ -469,41 +477,48 @@ public class Utilities
 
     //------------------------------------------------------------------------------------------------------------------
     //## Methods
-    /** SCOPED CLASS+METHOD */
+    /** Scoped CLASS+METHOD */
     static public boolean methodReturns(Class<?> returnType) {
         return Utilities.methodReturns(METHOD.get(), returnType);
     }
 
-    /** SCOPED CLASS */
+    /** Scoped CLASS */
     static public boolean methodExists(String method, Class<?>... parameterTypes) {
         return findMethod(CLASS.get(), method, parameterTypes).isPresent();
     }
 
 
+    /** Scoped METHOD */
     static public boolean methodIsPublic() {
         return (METHOD.get().getModifiers() & Modifier.PUBLIC) != 0;
     }
 
+    /** Scoped METHOD */
     static public boolean methodIsProtected() {
         return (METHOD.get().getModifiers() & Modifier.PROTECTED) != 0;
     }
 
+    /** Scoped METHOD */
     static public boolean methodIsPrivate() {
         return (METHOD.get().getModifiers() & Modifier.PRIVATE) != 0;
     }
 
+    /** Scoped METHOD */
     static public boolean methodIsAbstract() {
         return (METHOD.get().getModifiers() & Modifier.ABSTRACT) != 0;
     }
 
+    /** Scoped METHOD */
     static public boolean methodIsStatic() {
         return (METHOD.get().getModifiers() & Modifier.STATIC) != 0;
     }
 
+    /** Scoped METHOD */
     static public boolean methodIsFinal() {
         return (METHOD.get().getModifiers() & Modifier.FINAL) != 0;
     }
 
+    /** Scoped METHOD */
     static public boolean methodHasModifiers(AccessFlag... flags) {
         return Utilities.methodHasModifiers(METHOD.get(), flags);
     }
@@ -523,26 +538,32 @@ public class Utilities
 
     //------------------------------------------------------------------------------------------------------------------
     //## Fields
+    /** Scoped FIELD */
     static public boolean fieldIsPublic() {
         return (FIELD.get().getModifiers() & Modifier.PUBLIC) != 0;
     }
 
+    /** Scoped FIELD */
     static public boolean fieldIsProtected() {
         return (FIELD.get().getModifiers() & Modifier.PROTECTED) != 0;
     }
 
+    /** Scoped FIELD */
     static public boolean fieldIsPrivate() {
         return (FIELD.get().getModifiers() & Modifier.PRIVATE) != 0;
     }
 
+    /** Scoped FIELD */
     static public boolean fieldIsStatic() {
         return (FIELD.get().getModifiers() & Modifier.STATIC) != 0;
     }
 
+    /** Scoped FIELD */
     static public boolean fieldIsFinal() {
         return (FIELD.get().getModifiers() & Modifier.FINAL) != 0;
     }
 
+    /** Scoped FIELD */
     static public boolean fieldHasModifiers(AccessFlag... flags) {
         return Utilities.fieldHasModifiers(FIELD.get(), flags);
     }
