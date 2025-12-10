@@ -370,6 +370,39 @@ public class Utilities
     }
 
 
+    static public void testClassField(String pkg, String className, String fieldName, Runnable fn) {
+        Utilities.testClassField(FQCN(pkg, className), fieldName, fn);
+    }
+
+    static public void testClassField(String fullyQualifiedClassName, String fieldName, Runnable fn) {
+        var classObject = Utilities.findClass(fullyQualifiedClassName);
+
+        if (classObject.isEmpty()) {
+            throw new AssertionFailedError(
+                "Class not found: %s".formatted(fullyQualifiedClassName),
+                "Class located at src/main/java/%s.java".formatted(fullyQualifiedClassName.replaceAll("\\.", "/")),
+                "Class not found"
+            );
+        }
+
+        where(Utilities.CLASS, classObject.get()).run(() -> {
+            var fieldObject = Utilities.findField(CLASS.get(), fieldName);
+
+            if (fieldObject.isEmpty()) {
+                throw new AssertionFailedError(
+                    "Class-field not found: %s#%s".formatted(
+                            fullyQualifiedClassName, fieldName
+                    ),
+                    "Field to exist within class",
+                    "Field within class does not exist"
+                );
+            }
+
+            where(Utilities.FIELD, fieldObject.get()).run(fn);
+        });
+    }
+
+
     //__________________________________________________________________________________________________________________
     //### Scoped method
     /** Scoped CLASS */
