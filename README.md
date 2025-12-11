@@ -34,7 +34,36 @@ Code that tests the assignment goes here
 
 ---
 
-# Examples
+## GitHub Action
+
+> `.github/workflows/test-assignment.yml`
+
+```yml
+name: Maven CI with Java 25
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5.0.1
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v5.1.0
+        with:
+          distribution: 'oracle'
+          java-version: '25'
+          cache: 'maven'
+
+      - name: Build with Maven and run tests
+        run: mvn test
+```
+
+---
+
+## Examples: Testing assignment code
 
 > Examples below are just a subset of what is available, docs are work-in-progress
 
@@ -77,7 +106,7 @@ testClassMethod("assignment.Person", "getName", () -> {
 - If you are writing tests locally and from time to time are pulling changes from origin or upstream (in a fork), use `src/main/java/[local|dev]/**` and `src/test/java/[local|dev]/**` as these are included in the gitignore 
 
 
-## Plans
+# Plans
 
 - File I/O
 - Database I/O (JDBC)
