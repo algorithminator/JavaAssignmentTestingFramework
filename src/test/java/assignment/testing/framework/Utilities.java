@@ -827,6 +827,8 @@ public class Utilities
     }
 
 
+    // TODO: improve later, goal is to preserve indentation when removing leading whitespace from multiline string given
+    // TODO: handle when first line does not set the proper (intended) indentation level
     static public void provideHintIfAssertionFails(String hint, Runnable fn) {
         try {
             fn.run();
@@ -834,7 +836,22 @@ public class Utilities
             Utilities.resetStandardOutput();
 
             IO.println();
-            IO.println(hint);
+
+            if (hint.lines().count() == 1) {
+                IO.println(hint);
+            }
+            else {
+                var firstLine = hint.lines().findFirst();
+
+                if (firstLine.isPresent()) {
+                    var indentation = firstLine.get().length() - firstLine.get().stripLeading().length();
+
+                    hint.lines().forEach(line -> {
+                        if (line.length() > indentation) IO.println(line.substring(indentation));
+                        else IO.println(line.stripLeading());
+                    });
+                }
+            }
 
             Utilities.setStandardOutput();
 

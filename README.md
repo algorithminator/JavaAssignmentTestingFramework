@@ -98,7 +98,7 @@ testClassMethod("assignment.Person", "getName", () -> {
     assertTrue(methodReturns(String.class));
 });
 
-testClassMethod("assignment.Student", "toString", () -> {
+testClass("assignment.Student", () -> {
     testMethod("toString", () -> {
         provideHintIfAssertionFails(
             String.format(
