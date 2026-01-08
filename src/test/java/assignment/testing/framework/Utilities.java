@@ -412,8 +412,9 @@ public class Utilities
 
     /** Scoped CLASS */
     static public boolean methodExists(String method, Class<?>... parameterTypes) {
-        return findDeclaredMethod(CLASS.get(), method, parameterTypes).isPresent();
+        return findMethod(CLASS.get(), method, parameterTypes).isPresent();
     }
+
 
     static public boolean methodExistsDeclared(String pkg, String className, String methodName, Class<?>... parameterTypes) {
         return Utilities.methodExistsDeclared(Utilities.FQCN(pkg, className), methodName, parameterTypes);
