@@ -412,7 +412,24 @@ public class Utilities
 
     /** Scoped CLASS */
     static public boolean methodExists(String method, Class<?>... parameterTypes) {
-        return findMethod(CLASS.get(), method, parameterTypes).isPresent();
+        return findDeclaredMethod(CLASS.get(), method, parameterTypes).isPresent();
+    }
+
+    static public boolean methodExistsDeclared(String pkg, String className, String methodName, Class<?>... parameterTypes) {
+        return Utilities.methodExistsDeclared(Utilities.FQCN(pkg, className), methodName, parameterTypes);
+    }
+
+    static public boolean methodExistsDeclared(String fullyQualifiedClassName, String methodName, Class<?>... parameterTypes) {
+        return Utilities.findDeclaredMethod(fullyQualifiedClassName, methodName, parameterTypes).isPresent();
+    }
+
+    static public boolean methodExistsDeclared(Class<?> classObject, String methodName, Class<?>... parameterTypes) {
+        return Utilities.findDeclaredMethod(classObject, methodName, parameterTypes).isPresent();
+    }
+
+    /** Scoped CLASS */
+    static public boolean methodExistsDeclared(String method, Class<?>... parameterTypes) {
+        return findDeclaredMethod(CLASS.get(), method, parameterTypes).isPresent();
     }
 
 
@@ -703,6 +720,18 @@ public class Utilities
         return Utilities.findField(CLASS.get(), fieldName).isPresent();
     }
 
+    static public boolean fieldExistsDeclared(String pkg, String className, String fieldName) {
+        return Utilities.fieldExistsDeclared(FQCN(pkg, className), fieldName);
+    }
+
+    static public boolean fieldExistsDeclared(String fullyQualifiedClassName, String fieldName) {
+        return Utilities.findDeclaredField(fullyQualifiedClassName, fieldName).isPresent();
+    }
+
+    /** Scoped CLASS */
+    static public boolean fieldExistsDeclared(String fieldName) {
+        return Utilities.findDeclaredField(CLASS.get(), fieldName).isPresent();
+    }
 
     /** Scoped FIELD */
     static public boolean fieldIsPublic() {
